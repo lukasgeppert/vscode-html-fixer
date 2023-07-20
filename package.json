@@ -51,7 +51,6 @@
   "homepage": "https://github.com/lukasgeppert/vscode-html-fixer#readme",
   "devDependencies": {
     "@types/glob": "^8.1.0",
-    "@types/jsdom": "^21.1.1",
     "@types/mocha": "^10.0.1",
     "@types/node": "20.2.5",
     "@types/vscode": "^1.80.0",
