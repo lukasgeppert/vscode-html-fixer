@@ -1,56 +1,29 @@
 import * as vscode from 'vscode';
-import { JSDOM } from 'jsdom';
-
-class HTMLFixer implements vscode.DocumentFormattingEditProvider {
-  public provideDocumentFormattingEdits(
-    document: vscode.TextDocument
-  ): vscode.TextEdit[] {
-    const text = document.getText();
-    const dom = new JSDOM(text);
-    const prettyText = dom.serialize();
-    const range = new vscode.Range(
-      document.positionAt(0),
-      document.positionAt(text.length)
-    );
-    return [new vscode.TextEdit(range, prettyText)];
-  }
-}
+import * as cheerio from 'cheerio';
 
 export function activate(context: vscode.ExtensionContext) {
-  const htmlFixer = new HTMLFixer();
+    let disposable = vscode.commands.registerCommand('extension.htmlFixer', function () {
+        let editor = vscode.window.activeTextEditor;
+        if (editor) {
+            let document = editor.document;
+            let text = document.getText();
 
-  // register HTMLFixer as a DocumentFormattingEditProvider for HTML
-  context.subscriptions.push(
-    vscode.languages.registerDocumentFormattingEditProvider('html', htmlFixer)
-  );
+            let $ = cheerio.load(text);
+            let fixedHtml = $.html();
 
-  let disposable = vscode.commands.registerCommand('extension.htmlFixer', () => {
-    const editor = vscode.window.activeTextEditor;
-    if (editor) {
-      const document = editor.document;
-      if (document.languageId === 'html') {
-        const edits = htmlFixer.provideDocumentFormattingEdits(document);
-        const workspaceEdit = new vscode.WorkspaceEdit();
-        for (const edit of edits) {
-          workspaceEdit.replace(document.uri, edit.range, edit.newText);
+            editor.edit(editBuilder => {
+                let firstLine = document.lineAt(0);
+                let lastLine = document.lineAt(document.lineCount - 1);
+                let textRange = new vscode.Range(firstLine.range.start, lastLine.range.end);
+                
+                editBuilder.replace(textRange, fixedHtml);
+            });
         }
-        vscode.workspace.applyEdit(workspaceEdit)
-          .then(success => {
-            if (success) {
-              document.save();
-              vscode.window.showInformationMessage('HTML fixing is done!');
-            } else {
-              vscode.window.showErrorMessage('Error applying edits to document');
-            }
-          }, error => {
-            vscode.window.showErrorMessage(`Error: ${String(error)}`);
-          });
-      }
-    }
-  });
+    });
 
-  context.subscriptions.push(disposable);
+    context.subscriptions.push(disposable);
 }
+
 
 
 export function deactivate() {}
