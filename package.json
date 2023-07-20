@@ -1,0 +1,70 @@
+{
+  "name": "html-fixer",
+  "displayName": "HTML Fixer",
+  "description": "Turn messy HTML into W3C compliant code",
+  "version": "0.0.1",
+  "publisher": "lukasgeppert",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Formatters"
+  ],
+  "activationEvents": [
+    "onLanguage:handlebars",
+    "onLanguage:html",
+    "onCommand:extension.htmlFixer"
+  ],
+  "main": "./out/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.htmlFixer",
+        "title": "Fix HTML"
+      }
+    ]
+  },
+  "icon": "icon.png",
+  "capabilities": {
+    "documentFormattingProvider": "true"
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "node ./out/test/runTest.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lukasgeppert/vscode-html-fixer.git"
+  },
+  "keywords": [
+    "visual studio code",
+    "html",
+    "format"
+  ],
+  "author": "Lukas Geppert",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lukasgeppert/vscode-html-fixer/issues"
+  },
+  "homepage": "https://github.com/lukasgeppert/vscode-html-fixer#readme",
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/jsdom": "^21.1.1",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "20.2.5",
+    "@types/vscode": "^1.80.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
+    "@vscode/test-electron": "^2.3.2",
+    "eslint": "^8.41.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "typescript": "^5.1.3"
+  },
+  "dependencies": {
+    "jsdom": "^22.1.0"
+  }
+}
