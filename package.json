@@ -2,7 +2,7 @@
   "name": "html-fixer",
   "displayName": "HTML Fixer",
   "description": "Turn messy HTML into W3C compliant code",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "publisher": "lukasgeppert",
   "engines": {
     "vscode": "^1.80.0"
